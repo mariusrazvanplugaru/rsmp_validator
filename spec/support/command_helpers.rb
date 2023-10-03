@@ -384,16 +384,16 @@ module Validator::CommandHelpers
         collector.collect!
         collector.messages.first
       end
-      force_input_and_confirm input: input_nr, value: 'False'
+      force_input_and_confirm input: input_nr, status: 'False', value: 'False'
       state = false
       return collect_task.wait, component_id
     ensure
-      force_input_and_confirm input: input_nr, value: 'False' if state == true
+      force_input_and_confirm input: input_nr, status: 'False', value: 'False' if state == true
     end
   end
 
-  def force_input_and_confirm(input:, value:)
-    force_input status: 'True', input: input.to_s, value: value
+  def force_input_and_confirm(status: 'True', input:, value:)
+    force_input status: status, input: input.to_s, value: value
     digit = (value == 'True' ? '1' : '0')
     wait_for_status(@task,
       "input #{input} to be #{value}",
